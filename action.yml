@@ -31,5 +31,5 @@ runs:
     - shell: bash
       run: |
         export DATADOG_API_KEY=${{ inputs.api_key }}
-        ${{ github.action_path }}/datadog-notify.sh "${{ inputs.title }}" "${{ inputs.text }}" "${{ inputs.tags }}" "${{ inputs.alert_type }}"
+        ${{ github.action_path }}/datadog-notify.sh "${{ inputs.title }}" "${{ inputs.text }}" "${{ inputs.alert_type }}" "${{ inputs.tags }}"
 
