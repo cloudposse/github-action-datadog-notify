@@ -1,8 +1,8 @@
 #!/bin/bash
 ##
-##	MIT License
+##  MIT License
 ##
-##	Copyright (c) 2022 Developer Mountain and Adam Whittingham
+##  Copyright (c) 2022 Developer Mountain and Adam Whittingham
 ##
 ## The following code is a derivative work of the code from https://github.com/dvmtn/datadog-notify,
 ## which is licensed MIT. This code is also licensed under the terms  of the MIT License.
@@ -55,14 +55,14 @@ if $(echo "$alert_type" | grep -qv 'error\|warning\|info\|success\|user_update\|
 fi
 
 if [[ ${APPEND_HOSTNAME_TAG} ]]; then
-	tag="${APPEND_HOSTNAME_TAG}:$(hostname) $4"
+  tag="${APPEND_HOSTNAME_TAG}:$(hostname) $4"
 else
-	tag="$4"
+  tag="$4"
 fi
 tags=$(echo $tag | sed -e's/[\.a-zA-Z:0-9\/\_\-]*/\"&\"/g' -e's/\" \"/\", \"/g' )
 
 api="https://app.datadoghq.com/api/v1"
-datadog="${api}/events?api_key=${api_key}"
+datadog="${api}/events"
 
 payload=$(cat <<-EOJ
   {
@@ -76,13 +76,13 @@ EOJ
 
 echo -e "$payload"
 
-response=$(curl -s -X POST -H "Content-type: application/json" -d "$(echo "${payload}" | sed ':a;N;$!ba;s/\n/ /g')" "$datadog")
+response=$(curl -s -X POST -H "Content-type: application/json" -H "DD-API-KEY: ${api_key}" -d "$(echo "${payload}" | sed ':a;N;$!ba;s/\n/ /g')" "$datadog")
 
 if [[ $(echo "$response" | grep -c '"status":"ok"') -eq 1 ]]; then
-	echo "Success: Event sent to Datadog" >&2
-	exit 0
+  echo "Success: Event sent to Datadog" >&2
+  exit 0
 else
-	echo "Failed: Event not sent to Datadog" >&2
-	echo "Response: $response" >&2
-	exit 1
+  echo "Failed: Event not sent to Datadog" >&2
+  echo "Response: $response" >&2
+  exit 1
 fi
