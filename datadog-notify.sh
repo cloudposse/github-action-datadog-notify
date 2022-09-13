@@ -1,5 +1,8 @@
 #!/bin/bash
-## Copied From https://raw.githubusercontent.com/dvmtn/datadog-notify/master/datadog-notify
+##
+##	MIT License
+##
+##	Copyright (c) 2022 Developer Mountain
 
 function usage(){
   echo "Usage:" >&2
