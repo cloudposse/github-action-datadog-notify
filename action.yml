@@ -7,8 +7,8 @@ branding:
 
 inputs:
   api_key:
-      description: "Datadog API Key"
-      required: true
+    description: "Datadog API Key"
+    required: true
   title:
     required: true
     description: "Title of the event"
@@ -26,7 +26,8 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - id: Notify Datadog
+    - id: notify_datadog
+      name: Notify Datadog
       shell: bash
       run: |
         export DATADOG_API_KEY=${{ inputs.api_key }}
