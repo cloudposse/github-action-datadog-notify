@@ -83,7 +83,7 @@ usage: |-
             withDecryption: "true" # defaults to true
 
         - name: Notify Datadog
-          uses: cloudposse/github-action-datadog-notify@init
+          uses: cloudposse/github-action-datadog-notify@main
           with:
             api_key: ${{ env.DATADOG_API_KEY }}
             title: "GitHub Action: ${{ github.event_name }}"
