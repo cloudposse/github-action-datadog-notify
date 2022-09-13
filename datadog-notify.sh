@@ -48,8 +48,12 @@ if $(echo "$alert_type" | grep -qv 'error\|warning\|info\|success\|user_update\|
   usage
 fi
 
-tag="hostname:$(hostname) $4"
-tags=$(echo $tag | sed -e's/[\.a-zA-Z:0-9\-]*/\"&\"/g' -e's/\" \"/\", \"/g' )
+if [[ ${APPEND_HOSTNAME_TAG} ]]; then
+	tag="${APPEND_HOSTNAME_TAG}:$(hostname) $4"
+else
+	tag="$4"
+fi
+tags=$(echo $tag | sed -e's/[\.a-zA-Z:0-9\_\-]*/\"&\"/g' -e's/\" \"/\", \"/g' )
 
 api="https://app.datadoghq.com/api/v1"
 datadog="${api}/events?api_key=${api_key}"
@@ -66,4 +70,13 @@ EOJ
 
 echo -e "$payload"
 
-curl -s -X POST -H "Content-type: application/json" -d "$(echo "${payload}" | sed ':a;N;$!ba;s/\n/ /g')" "$datadog"
+response=$(curl -s -X POST -H "Content-type: application/json" -d "$(echo "${payload}" | sed ':a;N;$!ba;s/\n/ /g')" "$datadog")
+
+if [[ $(echo "$response" | grep -c '"status":"ok"') -eq 1 ]]; then
+	echo "Success: Event sent to Datadog" >&2
+	exit 0
+else
+	echo "Failed: Event not sent to Datadog" >&2
+	echo "Response: $response" >&2
+	exit 1
+fi
