@@ -1,6 +1,6 @@
 name: 'Datadog Notify'
 description: 'Sends Event to Datadog via api call'
-author: ben@cloudposse.com
+author: maintainers@cloudposse.com
 branding:
   icon: 'alert-triangle'
   color: 'blue'
