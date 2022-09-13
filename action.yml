@@ -26,6 +26,9 @@ inputs:
     required: false
     description: "Should we append the hostname as a tag to the event, set this to the key of the tag"
     default: ""
+
+outputs: {}
+
 runs:
   using: "composite"
   steps:
