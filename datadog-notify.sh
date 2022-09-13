@@ -53,7 +53,7 @@ if [[ ${APPEND_HOSTNAME_TAG} ]]; then
 else
 	tag="$4"
 fi
-tags=$(echo $tag | sed -e's/[\.a-zA-Z:0-9\_\-]*/\"&\"/g' -e's/\" \"/\", \"/g' )
+tags=$(echo $tag | sed -e's/[\.a-zA-Z:0-9\/\_\-]*/\"&\"/g' -e's/\" \"/\", \"/g' )
 
 api="https://app.datadoghq.com/api/v1"
 datadog="${api}/events?api_key=${api_key}"
