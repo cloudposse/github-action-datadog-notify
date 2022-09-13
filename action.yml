@@ -32,8 +32,9 @@ runs:
     - run: chmod +x ${{ github.action_path }}/datadog-notify.sh
       shell: bash
     - shell: bash
+      env:
+        DATADOG_API_KEY: ${{ inputs.api_key }}
+        APPEND_HOSTNAME_TAG: ${{ inputs.append_hostname_tag }}
       run: |
-        export DATADOG_API_KEY=${{ inputs.api_key }}
-        export APPEND_HOSTNAME_TAG=${{ inputs.append_hostname_tag }}
         ${{ github.action_path }}/datadog-notify.sh "${{ inputs.title }}" "${{ inputs.text }}" "${{ inputs.alert_type }}" "${{ inputs.tags }}"
 
