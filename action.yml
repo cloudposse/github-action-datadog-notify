@@ -26,11 +26,10 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - id: notify_datadog
-      name: Notify Datadog
+    - run: chmod +x ${{ github.action_path }}/datadog-notify.sh
       shell: bash
+    - shell: bash
       run: |
         export DATADOG_API_KEY=${{ inputs.api_key }}
-        chmod +x ./datadog-notify.sh
-        ./datadog-notify.sh "${{ inputs.title }}" "${{ inputs.text }}" "${{ inputs.tags }}" "${{ inputs.alert_type }}"
+        ${{ github.action_path }}/datadog-notify.sh "${{ inputs.title }}" "${{ inputs.text }}" "${{ inputs.tags }}" "${{ inputs.alert_type }}"
 
