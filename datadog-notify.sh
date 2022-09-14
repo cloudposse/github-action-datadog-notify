@@ -26,9 +26,8 @@ message="$2"
 alert_type="$3"
 
 
-
 if [[ -z "$DATADOG_API_KEY" ]]; then
-  echo "Could not find Datadog API key in either ${dd_config} or DATADOG_API_KEY environment variable." >&2
+  echo "Could not find Datadog API key in the DATADOG_API_KEY environment variable." >&2
   echo "Please provide your API key in one of these locations" >&2
   usage
 fi
@@ -68,7 +67,7 @@ payload=$(cat <<-EOJ
 EOJ
 )
 
-echo -e "$payload"
+#echo -e "$payload"
 
 response=$(curl -s -X POST -H "Content-type: application/json" -H "DD-API-KEY: ${DATADOG_API_KEY}" -d "$(echo "${payload}" | sed ':a;N;$!ba;s/\n/ /g')" "$datadog")
 
