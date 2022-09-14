@@ -4,8 +4,8 @@
 ##
 ##  Copyright (c) 2022 Developer Mountain and Adam Whittingham
 ##  Copyright (c) 2022 Cloud Posse, LLC <maintainers@cloudposse.com>
-## The following code is a derivative work of the code from https://github.com/dvmtn/datadog-notify,
-## which is licensed MIT. This code is also licensed under the terms of the MIT License.
+##  The following code is a derivative work of the code from https://github.com/dvmtn/datadog-notify,
+##  which is licensed MIT. This code is also licensed under the terms of the MIT License.
 
 function usage(){
   echo "Usage:" >&2
