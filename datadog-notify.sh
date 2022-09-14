@@ -25,15 +25,9 @@ title="$1"
 message="$2"
 alert_type="$3"
 
-dd_config='/etc/dd-agent/datadog.conf'
 
-if [[ -n "$DATADOG_API_KEY" ]]; then
-  api_key="$DATADOG_API_KEY"
-else
-  api_key=$(grep '^api_key:' $dd_config | cut -d' ' -f2)
-fi
 
-if [[ -z "$api_key" ]]; then
+if [[ -z "$DATADOG_API_KEY" ]]; then
   echo "Could not find Datadog API key in either ${dd_config} or DATADOG_API_KEY environment variable." >&2
   echo "Please provide your API key in one of these locations" >&2
   usage
@@ -76,7 +70,7 @@ EOJ
 
 echo -e "$payload"
 
-response=$(curl -s -X POST -H "Content-type: application/json" -H "DD-API-KEY: ${api_key}" -d "$(echo "${payload}" | sed ':a;N;$!ba;s/\n/ /g')" "$datadog")
+response=$(curl -s -X POST -H "Content-type: application/json" -H "DD-API-KEY: ${DATADOG_API_KEY}" -d "$(echo "${payload}" | sed ':a;N;$!ba;s/\n/ /g')" "$datadog")
 
 if [[ $(echo "$response" | grep -c '"status":"ok"') -eq 1 ]]; then
   echo "Success: Event sent to Datadog" >&2
