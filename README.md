@@ -88,18 +88,21 @@ Below uses the `dkershner6/aws-ssm-getparameters-action` to get the datadog api 
 name: Datadog Notify
 on:
   workflow_dispatch:
-
   pull_request:
+    branches:
+      - 'main'
 
 permissions:
   contents: read
   pull-requests: write
   id-token: write
+
 jobs:
   datadog-notify:
     runs-on: ["self-hosted"]
     steps:
       - uses: actions/checkout@v3
+
       - name: Configure AWS credentials
         id: aws-credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -107,12 +110,10 @@ jobs:
           role-to-assume:  ${{ secrets.AWS_ROLE_TO_ASSUME }}
           role-session-name: "gha-datadog-notify"
           aws-region: "us-east-1"
+
       - uses: dkershner6/aws-ssm-getparameters-action@v1
         with:
           parameterPairs: "/datadog/datadog_api_key = DATADOG_API_KEY"
-          # The part before equals is the ssm parameterName, and after is the ENV Variable name for the workflow.
-          # No limit on number of parameters. You can put new lines and spaces in as desired, they get trimmed out.
-          withDecryption: "true" # defaults to true
 
       - name: Notify Datadog
         uses: cloudposse/github-action-datadog-notify@main
