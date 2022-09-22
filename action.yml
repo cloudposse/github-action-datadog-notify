@@ -1,23 +1,43 @@
-name: 'Example composite GitHub action'
-description: 'Example composite GitHub action'
-author: hello@cloudposse.com
+name: 'Datadog Notify'
+description: 'Sends Event to Datadog via api call'
+author: maintainers@cloudposse.com
 branding:
-  icon: 'file'
-  color: 'white'
+  icon: 'alert-triangle'
+  color: 'blue'
+
 inputs:
-  param1:
+  api_key:
+    description: "Datadog API Key"
     required: true
-    description: "Input parameter placeholder"
-    default: "true"
-outputs:
-  result1:
-    description: "Output result placeholder"
-    value: "${{ steps.context.outputs.action-result }}"
+  title:
+    required: true
+    description: "Title of the event"
+  text:
+    required: true
+    description: "Description of the event"
+  tags:
+    required: true
+    description: "Space separated list of Tags for the event"
+  alert_type:
+     required: true
+     description: "Type of the event, one of: error,warning,info,success,user_update,recommendation,snapshot"
+     default: "info"
+  append_hostname_tag:
+    required: false
+    description: "Should we append the hostname as a tag to the event, set this to the key of the tag"
+    default: ""
+
+outputs: {}
+
 runs:
   using: "composite"
   steps:
-    - id: context
+    - run: chmod +x ${{ github.action_path }}/datadog-notify.sh
       shell: bash
+    - shell: bash
+      env:
+        DATADOG_API_KEY: ${{ inputs.api_key }}
+        APPEND_HOSTNAME_TAG: ${{ inputs.append_hostname_tag }}
       run: |
-          echo "::set-output name=action-result::${{ inputs.param1 }}"
+        ${{ github.action_path }}/datadog-notify.sh "${{ inputs.title }}" "${{ inputs.text }}" "${{ inputs.alert_type }}" "${{ inputs.tags }}"
 
