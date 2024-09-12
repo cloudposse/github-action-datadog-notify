@@ -5,3 +5,4 @@ repository:
   description: Github Action for https://github.com/dvmtn/datadog-notify, which sends an event api call to Datadog
   homepage: https://cloudposse.com/accelerate
   topics: ""
+
