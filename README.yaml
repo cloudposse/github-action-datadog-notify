@@ -105,8 +105,7 @@ usage: |-
             alert_type: "info"
   ```
 
-include:
-  - "docs/github-action.md"
+include: []
 
 # Contributors to this project
 contributors:
